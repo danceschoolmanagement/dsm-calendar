@@ -1,5 +1,7 @@
 const bluebird = require('bluebird');
 
+const { NotFoundError } = require('../utils/dsm-errors');
+
 const executeAction = action => {
     return (req, res, next) => {
         const activateAction = () => action(req.params, req.body, req.query);
@@ -17,7 +19,7 @@ const executeAction = action => {
 
 const handleActionResult = (req, res, next) => {
     if (!req.actionResult) {
-        return next(new Error('action not found'));
+        return next(new NotFoundError('Action not found.'));
     }
 
     res.json(req.actionResult.value);
